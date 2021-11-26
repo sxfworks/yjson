@@ -1,0 +1,183 @@
+
+state 0
+	$accept: .value $end 
+
+	String  shift 2
+	Number  shift 3
+	Literal  shift 4
+	'{'  shift 6
+	'['  shift 7
+	Variable  shift 5
+	.  error
+
+	value  goto 1
+
+state 1
+	$accept:  value.$end 
+
+	$end  accept
+	.  error
+
+
+state 2
+	value:  String.    (8)
+
+	.  reduce 8 (src line 63)
+
+
+state 3
+	value:  Number.    (9)
+
+	.  reduce 9 (src line 69)
+
+
+state 4
+	value:  Literal.    (10)
+
+	.  reduce 10 (src line 74)
+
+
+state 5
+	value:  Variable.    (11)
+
+	.  reduce 11 (src line 79)
+
+
+state 6
+	value:  '{'.members '}' 
+	members: .    (1)
+
+	String  shift 10
+	.  reduce 1 (src line 29)
+
+	members  goto 8
+	pair  goto 9
+
+state 7
+	value:  '['.elements ']' 
+	elements: .    (5)
+
+	String  shift 2
+	Number  shift 3
+	Literal  shift 4
+	'{'  shift 6
+	'['  shift 7
+	Variable  shift 5
+	.  reduce 5 (src line 50)
+
+	elements  goto 11
+	value  goto 12
+
+state 8
+	members:  members.',' pair 
+	value:  '{' members.'}' 
+
+	'}'  shift 14
+	','  shift 13
+	.  error
+
+
+state 9
+	members:  pair.    (2)
+
+	.  reduce 2 (src line 33)
+
+
+state 10
+	pair:  String.':' value 
+
+	':'  shift 15
+	.  error
+
+
+state 11
+	elements:  elements.',' value 
+	value:  '[' elements.']' 
+
+	']'  shift 17
+	','  shift 16
+	.  error
+
+
+state 12
+	elements:  value.    (6)
+
+	.  reduce 6 (src line 54)
+
+
+state 13
+	members:  members ','.pair 
+
+	String  shift 10
+	.  error
+
+	pair  goto 18
+
+state 14
+	value:  '{' members '}'.    (12)
+
+	.  reduce 12 (src line 84)
+
+
+state 15
+	pair:  String ':'.value 
+
+	String  shift 2
+	Number  shift 3
+	Literal  shift 4
+	'{'  shift 6
+	'['  shift 7
+	Variable  shift 5
+	.  error
+
+	value  goto 19
+
+state 16
+	elements:  elements ','.value 
+
+	String  shift 2
+	Number  shift 3
+	Literal  shift 4
+	'{'  shift 6
+	'['  shift 7
+	Variable  shift 5
+	.  error
+
+	value  goto 20
+
+state 17
+	value:  '[' elements ']'.    (13)
+
+	.  reduce 13 (src line 89)
+
+
+state 18
+	members:  members ',' pair.    (3)
+
+	.  reduce 3 (src line 39)
+
+
+state 19
+	pair:  String ':' value.    (4)
+
+	.  reduce 4 (src line 45)
+
+
+state 20
+	elements:  elements ',' value.    (7)
+
+	.  reduce 7 (src line 58)
+
+
+14 terminals, 5 nonterminals
+14 grammar rules, 21/16000 states
+0 shift/reduce, 0 reduce/reduce conflicts reported
+54 working sets used
+memory: parser 7/240000
+10 extra closures
+31 shift entries, 1 exceptions
+8 goto entries
+0 entries saved by goto default
+Optimizer space used: output 21/240000
+21 table entries, 1 zero
+maximum spread: 14, maximum offset: 16
